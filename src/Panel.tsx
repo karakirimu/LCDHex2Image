@@ -13,8 +13,8 @@ export interface PanelProps {
 export default function Panel(props: PanelProps) {
   const [hex, setHex] = useState(props.hex ? props.hex : "")
   const [direction, setDirection] = useState(props.direction ? props.direction : "Vertical")
-  const [lcdWidth, setLcdWidth] = useState(props.width ? props.width : 16)
-  const [lcdHeight, setLcdHeight] = useState(props.height ? props.height : 16)
+  const [lcdWidth, setLcdWidth] = useState(props.width ? props.width : 128)
+  const [lcdHeight, setLcdHeight] = useState(props.height ? props.height : 64)
   const [delimiter, setDelimiter] = useState(props.delimiter ? props.delimiter : ",")
   const [invert, setInvert] = useState(props.invert ? props.invert : false)
   const canvasId= "lcdhex2bmp-" + crypto.randomUUID()
@@ -135,8 +135,10 @@ export default function Panel(props: PanelProps) {
                   </Grid>
                   <Spacer y={1}/>
                   <Grid xs={12}>
+                    <Text>Size</Text>
+                  </Grid>
+                  <Grid xs={12}>
                     <Input
-                      label="Size"
                       area-label="hex-width"
                       labelLeft="width" 
                       labelRight="px" 
@@ -144,9 +146,7 @@ export default function Panel(props: PanelProps) {
                       type="number"
                       onChange={(v) => setLcdWidth(parseInt(v.currentTarget.value))}
                     />
-                  </Grid>
-                  <Spacer y={0.5}/>
-                  <Grid xs={12}>
+                    <Spacer />
                     <Input
                       area-label="hex-height"
                       labelLeft="height" 
@@ -161,7 +161,7 @@ export default function Panel(props: PanelProps) {
               <Card.Body css={{ py: "$2" }}>
                 <Textarea
                   label="Input hex array"
-                  placeholder="Enter your amazing ideas."
+                  placeholder="e.g. 0x00,0xff,0xff,0x00 ..."
                   initialValue={hex}
                   onInput={(v) => {console.log(v.currentTarget.value); setHex(v.currentTarget.value)}}
                 />
