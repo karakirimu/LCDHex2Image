@@ -1,19 +1,22 @@
-import { Text, Spacer, Card, Row, Col, Grid, Radio, Input, Textarea } from "@nextui-org/react"
+import { Text, Spacer, Card, Row, Col, Grid, Radio, Input, Textarea, Switch, SwitchEvent, Button, Container } from "@nextui-org/react"
 import { useState, useRef, useEffect } from "react"
 
 export interface PanelProps {
+    hex?: string,
     direction?: string,
     width?: number,
     height?: number,
-    delimiter?: string
+    delimiter?: string,
+    invert?: boolean
 }
 
 export default function Panel(props: PanelProps) {
-  const [hex, setHex] = useState("0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x80,0x09,0x60,0x12,0x20,0x13,0x20,0x1C,0xA0,0x00,0xC0,0x01,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00")
+  const [hex, setHex] = useState(props.hex ? props.hex : "")
   const [direction, setDirection] = useState(props.direction ? props.direction : "Vertical")
   const [lcdWidth, setLcdWidth] = useState(props.width ? props.width : 16)
   const [lcdHeight, setLcdHeight] = useState(props.height ? props.height : 16)
   const [delimiter, setDelimiter] = useState(props.delimiter ? props.delimiter : ",")
+  const [invert, setInvert] = useState(props.invert ? props.invert : false)
   const canvasId= "lcdhex2bmp-" + crypto.randomUUID()
   const canvasRef = useRef(null)
 
@@ -35,8 +38,8 @@ export default function Panel(props: PanelProps) {
         for (let x = 0; x < w; x++)
         {
           const blockstart = Math.trunc(y / 8)
-          const bit = 7 - (y % 8);
-          result[y][x] = ((data[x*h + blockstart] >> bit) & 1) > 0;
+          const bit = invert? (7 - (y % 8)) : (y % 8);
+          result[y][x] = ((data[x + blockstart * w] >> bit) & 1) > 0;
         }
       }
   
@@ -61,7 +64,7 @@ export default function Panel(props: PanelProps) {
           for (let x = 0; x < lcdWidth; x++)
           {
               const start = Math.trunc(x / 8);
-              const bit = 7 - (x % 8);
+              const bit = invert? (7 - (x % 8)) : (x % 8);
   
               result[y][x] = ((data[y*w + start] >> bit) & 1) > 0;
           }
@@ -84,7 +87,7 @@ export default function Panel(props: PanelProps) {
 
     for(let y = 0; y < lcdHeight; y++){
       for(let x = 0; x < lcdWidth; x++) {
-        const i = y * lcdHeight + x
+        const i = y * lcdWidth + x
         if(rdata[y][x]){
           image.data[i * 4 + 0] = 255; // 赤
           image.data[i * 4 + 1] = 255; // 緑
@@ -118,6 +121,13 @@ export default function Panel(props: PanelProps) {
                         Horizontal
                       </Radio>
                     </Radio.Group>
+                  </Grid>
+                  <Spacer y={1}/>
+                  <Grid xs={12}>
+                    <Text>Invert</Text>
+                  </Grid>
+                  <Grid xs={12}>
+                    <Switch checked={invert} onChange={(v: SwitchEvent) => {console.log(v); setInvert(v.target.checked)}}/>
                   </Grid>
                   <Spacer y={1}/>
                   <Grid xs={12}>
@@ -158,10 +168,15 @@ export default function Panel(props: PanelProps) {
               </Card.Body>
           </Col>
           <Col justify="center" align="center" textAlign="center">
-            <Card.Header>
-              <Text h4>Result</Text>
-            </Card.Header>
+            {/* <Card.Header>
+              <Container>
+                <Button color="error" auto>
+                  X
+                </Button>
+              </Container>
+            </Card.Header> */}
             <Card.Body>
+              <Text>Result</Text>
               <canvas ref={canvasRef} width={lcdWidth} height={lcdHeight} id={canvasId} />
             </Card.Body>
           </Col>

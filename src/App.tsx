@@ -4,6 +4,7 @@ import Panel from "./Panel";
 
 function App() {
   const { type, isDark } = useTheme();
+  const [panel, setPanel] = useState(<Grid xs={8}><Panel /></Grid>)
 
   const handleChange = () => {
     const nextTheme = isDark ? 'light' : 'dark';
@@ -11,13 +12,20 @@ function App() {
     changeTheme(nextTheme);
   }
 
+  // const AddItem = () => {
+  //   return
+  // }
+
   return (<>
-    <Navbar isBordered variant="static">
+    <Navbar isBordered variant="floating">
       <Navbar.Brand>
         <Text b color="inherit" hideIn="xs">
           LCDHex2Image
         </Text>
       </Navbar.Brand>
+      {/* <Navbar.Content>
+        <Button auto color="primary" rounded onChange={AddItem}>Add</Button>
+      </Navbar.Content> */}
       <Navbar.Content>
         <Navbar.Toggle onChange={handleChange}>
           Theme: {type}
@@ -25,12 +33,7 @@ function App() {
       </Navbar.Content>
     </Navbar>
     <Grid.Container gap={2} justify="center">
-      <Grid xs={6}>
-        <Panel />
-      </Grid>
-      <Grid xs={6}>
-        <Panel />
-      </Grid>
+      {panel}
     </Grid.Container>
   </>);
 }
