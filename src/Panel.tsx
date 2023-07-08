@@ -1,4 +1,4 @@
-import { Text, Spacer, Card, Row, Col, Grid, Radio, Input, Textarea, Switch, SwitchEvent, Button, Container } from "@nextui-org/react"
+import { Text, Spacer, Card, Row, Col, Grid, Radio, Input, Textarea, Switch, SwitchEvent } from "@nextui-org/react"
 import { useState, useRef, useEffect } from "react"
 
 export interface PanelProps {

@@ -1,5 +1,5 @@
-import { Button, Card, Col, Container, FormElement, Grid, Input, Link, Navbar, Radio, Row, Spacer, Switch, Text, Textarea, changeTheme, useTheme } from "@nextui-org/react";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { Grid, Navbar, Text, changeTheme, useTheme } from "@nextui-org/react";
+import { useState } from "react";
 import Panel from "./Panel";
 
 function App() {
