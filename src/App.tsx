@@ -1,40 +1,73 @@
-import { Grid, Navbar, Text, changeTheme, useTheme } from "@nextui-org/react";
-import { useState } from "react";
-import Panel from "./Panel";
+import { Button, Navbar, NavbarBrand, NavbarContent, Spacer } from "@nextui-org/react";
+import { useContext, useEffect, useState } from "react";
+import Panel, { PanelProps } from "./Panel";
+import { ThemeSwitcher } from "./ThemeSwitcher";
+import { AppContext, Operation, PanelOperation } from "./AppContextProvider";
 
-function App() {
-  const { type, isDark } = useTheme();
-  const [panel, setPanel] = useState(<Grid xs={8}><Panel /></Grid>)
+function App() {     
+  const c = useContext(AppContext)
+  const [panel, setPanel] = useState(<></>)
+  console.log("app.call")
 
-  const handleChange = () => {
-    const nextTheme = isDark ? 'light' : 'dark';
-    window.localStorage.setItem('data-theme', nextTheme); // you can use any storage
-    changeTheme(nextTheme);
+  const handleAdd = () => {
+    console.log("handleAdd.call")
+    const prop : PanelProps = {
+      hex: "",
+      direction: "Vertical",
+      width: 128,
+      height: 64,
+      delimiter: ",",
+      invert: false,
+      id: crypto.randomUUID()
+    }
+    c.context.set({operation: Operation.Add, panel: {id: prop.id, operation: PanelOperation.New, value: prop}})
   }
 
-  // const AddItem = () => {
-  //   return
-  // }
+  useEffect(() => {
+
+    const createPanel = () => {
+      // console.log("panel.call")
+      const d = c.context.get
+      const result = Array.from(d.panel.values()).map((v, i) => {
+        return (
+          <div key={i} className="w-full p-4">
+            <Panel key={i} {...v} />
+          </div>
+        )
+      })
+
+      if(result.length === 0){
+        result.push(
+        <div>
+          <Spacer y={8}/>
+          <span className="text-neutral-400 text-2xl">There are no items. Please press this </span>
+          <Button isIconOnly title="Add" color="primary" className="text-lg font-bold" radius="md" onClick={handleAdd}>+</Button>
+          <span className="text-neutral-400 text-2xl">.</span>
+        </div>
+        )
+      }
+  
+      return result
+    }
+
+    setPanel(<>{createPanel()}</>)
+  },[c.context.get, c.context.get.panel.size])
 
   return (<>
-    <Navbar isBordered variant="floating">
-      <Navbar.Brand>
-        <Text b color="inherit" hideIn="xs">
-          LCDHex2Image
-        </Text>
-      </Navbar.Brand>
-      {/* <Navbar.Content>
-        <Button auto color="primary" rounded onChange={AddItem}>Add</Button>
-      </Navbar.Content> */}
-      <Navbar.Content>
-        <Navbar.Toggle onChange={handleChange}>
-          Theme: {type}
-        </Navbar.Toggle>
-      </Navbar.Content>
+    <Navbar isBordered isBlurred position="static">
+      <NavbarBrand>
+        <p className="font-bold text-inherit">LCDHex2Image</p>
+      </NavbarBrand>
+      <NavbarContent justify="end">
+        <ThemeSwitcher />
+        <Button isIconOnly title="Add" color="primary" className="text-lg font-bold" radius="md" onClick={handleAdd}>+</Button>
+      </NavbarContent>
     </Navbar>
-    <Grid.Container gap={2} justify="center">
-      {panel}
-    </Grid.Container>
+    <div className="container mx-auto max-w-5xl">
+      <div className="flex flex-wrap justify-center">
+        {panel}
+      </div>
+    </div>
   </>);
 }
 
