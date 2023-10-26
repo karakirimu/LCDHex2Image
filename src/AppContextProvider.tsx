@@ -35,7 +35,7 @@ type Lcd = {
 
 type DispatchAction = {
   operation: string,
-  panel: {id: string, operation?: PanelOperation, value?: any}
+  panel: {id: string, operation?: PanelOperation, value?: string|number|boolean|PanelProps}
 }
 
 type AppContext = {
@@ -50,29 +50,29 @@ function reducer(context: Lcd, action: DispatchAction): Lcd {
   // console.log("Reducer")
   switch(action.operation) {
     case Operation.Add:
-      context.panel.set(action.panel.id, action.panel.value)
+      context.panel.set(action.panel.id, action.panel.value as PanelProps)
       break
     case Operation.Edit:
       {
         const item = (typeof action.panel.id !== "undefined")? context.panel.get(action.panel.id) : undefined
         switch(action.panel.operation) {
           case PanelOperation.Hex:
-            item!.hex = action.panel.value
+            item!.hex = action.panel.value as string
             break
           case PanelOperation.Direction:
-            item!.direction = action.panel.value
+            item!.direction = action.panel.value as string
             break
           case PanelOperation.Width:
-            item!.width = action.panel.value
+            item!.width = action.panel.value as number
             break
           case PanelOperation.Height:
-            item!.height = action.panel.value
+            item!.height = action.panel.value as number
             break
           case PanelOperation.Delimiter:
-            item!.delimiter = action.panel.value
+            item!.delimiter = action.panel.value as string
             break
           case PanelOperation.Invert:
-            item!.invert = action.panel.value
+            item!.invert = action.panel.value as boolean
             break
           default:
             break
@@ -94,7 +94,7 @@ function reducer(context: Lcd, action: DispatchAction): Lcd {
 
 export const AppContext = createContext({} as AppContext)
 
-export default function AppContextProvider(props: any) {
+export default function AppContextProvider(props: { children: React.ReactNode }) {
   const initReducer = useReducerProperty(reducer, dataDefault)
 
   return (

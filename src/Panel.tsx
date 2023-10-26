@@ -98,7 +98,7 @@ export default function Panel(props: PanelProps) {
 
   },[canvasId])
   
-  const handleEdit = (o: PanelOperation, v: string) => {
+  const handleEdit = (o: PanelOperation, v: string|boolean) => {
     console.log(`Operation: ${o}, Value: ${v}`)
     c.context.set({
       operation: Operation.Edit,
@@ -121,8 +121,8 @@ export default function Panel(props: PanelProps) {
                     <Radio value="Vertical" color="primary">Vertical</Radio>
                     <Radio value="Horizontal" color="secondary">Horizontal</Radio>
                   </RadioGroup>
-                  <Switch isSelected={props.invert} onChange={(v: any) => {
-                    handleEdit(PanelOperation.Invert, v.currentTarget.checked)}}>
+                  <Switch isSelected={props.invert} onValueChange={(v: boolean) => {
+                    handleEdit(PanelOperation.Invert, v)}}>
                     Invert
                   </Switch>
                 </div>
@@ -184,7 +184,7 @@ export default function Panel(props: PanelProps) {
               <p>Result</p>
               <Button
                 isIconOnly
-                radius="md"
+                radius="full"
                 onClick={() => c.context.set({operation: Operation.Remove, panel: {id: props.id}})}>
                 <MdClose />
               </Button>

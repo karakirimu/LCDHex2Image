@@ -20,7 +20,7 @@ export const ThemeSwitcher = () => {
   }
 
   return (
-    <Button isIconOnly title={theme} onClick={() => setTheme(nextTheme)}>
+    <Button isIconOnly variant="light" radius="full" title={theme} onClick={() => setTheme(nextTheme)}>
       {iconSelect(theme)}
     </Button>
   )

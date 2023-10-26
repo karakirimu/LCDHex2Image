@@ -3,6 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import Panel, { PanelProps } from "./Panel";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { AppContext, Operation, PanelOperation } from "./AppContextProvider";
+import { GrGithub } from "react-icons/gr"
+import { HiPlus } from "react-icons/hi"
 
 function App() {     
   const c = useContext(AppContext)
@@ -41,7 +43,7 @@ function App() {
         <div>
           <Spacer y={8}/>
           <span className="text-neutral-400 text-2xl">There are no items. Please press this </span>
-          <Button isIconOnly title="Add" color="primary" className="text-lg font-bold" radius="md" onClick={handleAdd}>+</Button>
+          <Button isIconOnly title="Add" color="primary" className="text-lg font-bold" radius="full" onClick={handleAdd}><HiPlus/></Button>
           <span className="text-neutral-400 text-2xl">.</span>
         </div>
         )
@@ -53,14 +55,19 @@ function App() {
     setPanel(<>{createPanel()}</>)
   },[c.context.get, c.context.get.panel.size])
 
+  const openUrl = () => {
+    window.open("https://github.com/karakirimu/LCDHex2Image", "_blank")
+  }
+
   return (<>
     <Navbar isBordered isBlurred position="static">
       <NavbarBrand>
         <p className="font-bold text-inherit">LCDHex2Image</p>
       </NavbarBrand>
       <NavbarContent justify="end">
+        <Button isIconOnly title="GitHub" variant="light" className="text-lg font-bold" radius="full" onClick={openUrl}><GrGithub/></Button>
         <ThemeSwitcher />
-        <Button isIconOnly title="Add" color="primary" className="text-lg font-bold" radius="md" onClick={handleAdd}>+</Button>
+        <Button isIconOnly title="Add" color="primary" className="text-lg font-bold" radius="full" onClick={handleAdd}><HiPlus/></Button>
       </NavbarContent>
     </Navbar>
     <div className="container mx-auto max-w-5xl">
