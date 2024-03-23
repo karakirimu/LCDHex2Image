@@ -121,7 +121,7 @@ export default function Panel(props: PanelProps) {
                     <Radio value="Vertical" color="primary">Vertical</Radio>
                     <Radio value="Horizontal" color="secondary">Horizontal</Radio>
                   </RadioGroup>
-                  <Switch isSelected={props.invert} onValueChange={(v: boolean) => {
+                  <Switch id="invert" isSelected={props.invert} onValueChange={(v: boolean) => {
                     handleEdit(PanelOperation.Invert, v)}}>
                     Invert
                   </Switch>

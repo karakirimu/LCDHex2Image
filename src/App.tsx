@@ -32,15 +32,15 @@ function App() {
       const d = c.context.get
       const result = Array.from(d.panel.values()).map((v, i) => {
         return (
-          <div key={i} className="w-full p-4">
-            <Panel key={i} {...v} />
+          <div key={v.id} className="w-full p-4">
+            <Panel key={v.id} {...v} />
           </div>
         )
       })
 
       if(result.length === 0){
         result.push(
-        <div>
+        <div key="no_item">
           <Spacer y={8}/>
           <span className="text-neutral-400 text-2xl">There are no items. Please press this </span>
           <Button isIconOnly title="Add" color="primary" className="text-lg font-bold" radius="full" onClick={handleAdd}><HiPlus/></Button>
