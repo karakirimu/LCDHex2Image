@@ -18,7 +18,7 @@ export default function Panel(props: PanelProps) {
   const canvasId= "lcdhex2bmp-" + crypto.randomUUID()
   const directionRef = useRef<HTMLInputElement>(null)
   const canvasRef = useRef(null)
-  const textareaRef = useRef<HTMLInputElement>(null)
+  const textareaRef = useRef<any>(null)
   const heightRef = useRef<HTMLInputElement>(null)
   const widthRef = useRef<HTMLInputElement>(null)
   const delimiterRef = useRef<HTMLInputElement>(null)
