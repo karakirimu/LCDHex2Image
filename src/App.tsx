@@ -30,7 +30,7 @@ function App() {
     const createPanel = () => {
       // console.log("panel.call")
       const d = c.context.get
-      const result = Array.from(d.panel.values()).map((v, i) => {
+      const result = Array.from(d.panel.values()).map((v) => {
         return (
           <div key={v.id} className="w-full p-4">
             <Panel key={v.id} {...v} />
